@@ -1,0 +1,692 @@
+{
+	"namespace": "server_form",
+
+	"long_form": {
+		"type": "panel",
+		"size": ["100%", "100%"],
+		"controls": [
+			{
+				"default_long_form@common_dialogs.main_panel_no_buttons": {
+					"$title_panel": "common_dialogs.standard_title_label",
+					"$title_size": ["100% - 14px", 10],
+					"size": [225, 200],
+					"$text_name": "#title_text",
+					"$title_text_binding_type": "none",
+					"$child_control": "server_form.long_form_panel",
+					"layer": 2,
+					"bindings": [
+						{
+							"binding_name": "#title_text"
+						},
+						{
+							"binding_type": "view",
+							"source_property_name": "(((#title_text - 'スタンプラリー ロードマップ§1') = #title_text) and ((#title_text - 'スタンプラリー ロードマップ§2') = #title_text))",
+							"target_property_name": "#visible"
+						}
+					]
+				}
+			},
+			{
+				"cutsom_long_form_1@common_dialogs.main_panel_no_buttons": {
+					"$title_panel": "common_dialogs.standard_title_label",
+					"$title_size": ["100% - 14px", 10],
+					"size": [350, 139],
+					"$text_name": "#title_text",
+					"$title_text_binding_type": "none",
+					"$child_control": "server_form.roadmap_panel_main_1",
+					"layer": 2,
+					"bindings": [
+						{
+							"binding_name": "#title_text"
+						},
+						{
+							"binding_type": "view",
+							"source_property_name": "((#title_text = 'スタンプラリー ロードマップ§1') and ((#title_text - 'スタンプラリー ロードマップ§2') = #title_text))",
+							"target_property_name": "#visible"
+						}
+					]
+				}
+			},
+			{
+				"cutsom_long_form_2@common_dialogs.main_panel_no_buttons": {
+					"$title_panel": "common_dialogs.standard_title_label",
+					"$title_size": ["100% - 14px", 10],
+					"size": [350, 139],
+					"$text_name": "#title_text",
+					"$title_text_binding_type": "none",
+					"$child_control": "server_form.roadmap_panel_main_2",
+					"layer": 2,
+					"bindings": [
+						{
+							"binding_name": "#title_text"
+						},
+						{
+							"binding_type": "view",
+							"source_property_name": "((#title_text = 'スタンプラリー ロードマップ§2') and ((#title_text - 'スタンプラリー ロードマップ§1') = #title_text))",
+							"target_property_name": "#visible"
+						}
+					]
+				}
+			}
+		]
+	},
+
+	"roadmap_panel_main_1": {
+		"offset": [ 0, 0 ],
+		"type": "panel",
+		"size": ["100%", "100%"],
+		"layer": 1,
+		"anchor_from": "top_left",
+		"anchor_to": "top_left",
+		"controls": [
+			{
+				"back_screen": {
+					"size": [ "100%", "100%" ],
+					"type": "image",
+					"texture": "textures/blocks/cherry_planks", 
+					"tiled": true
+				}
+			},
+			{
+				"scrolling_panel@common.scrolling_panel": {
+					"anchor_to": "top_left",
+					"anchor_from": "top_left",
+					"$show_background": false,
+					"offset": [ 0, 20 ],
+					"size": ["100%", "100%"],
+					"$scrolling_content": "server_form.scrolling_panel_1",
+					"$scroll_size": [5, "100% - 4px"],
+					"$scrolling_pane_size": ["100% - 4px", "100% - 2px"],
+					"$scrolling_pane_offset": [2, -10],
+					"$scroll_bar_right_padding_size": [0, 0]
+				}
+			},
+			{
+				"branchs": {
+					"size": [ "100%", "100%" ],
+					"type": "panel",
+					"controls": [
+						{
+							"hor_1": {
+								"size": [ 240, 3 ],
+								"offset": [ 0, -23.5 ],
+								"type": "image",
+								"texture": "textures/stamprally/ui/bar_hor"
+							}
+						},
+
+						{
+							"hor_2": {
+								"size": [ 240, 3 ],
+								"offset": [ -10, 15.5 ],
+								"type": "image",
+								"texture": "textures/stamprally/ui/bar_hor"
+							}
+						}
+					]
+				}
+			}
+			
+		]
+	},
+
+	"scrolling_panel_1": {
+		"type": "panel",
+		"size": ["100%", "100%c"],
+		"controls": [
+			{
+				"long_form_dynamic_buttons_panel": {
+					"type": "grid",
+					"size": ["100%", "100%c"],
+					"grid_dimensions": [3, 3],
+					"grid_item_template": "server_form.key_1",
+					"grid_fill_direction": "horizontal",
+					"grid_rescaling_type": "horizontal",
+					"anchor_from": "center",
+					"anchor_to": "center",
+
+					"factory": {
+						"name": "buttons",
+						"control_name": "server_form.key_1"
+					},
+
+					"collection_name": "form_buttons",
+					"bindings": [
+						{
+							"binding_name": "#form_button_length",
+							"binding_name_override": "#maximum_grid_items"
+						}
+					]
+				}
+			}
+		]
+	},
+	
+	"key_1": {
+		"$size": [ 32, 32 ],
+
+		"type": "panel",
+		"size": [60, 40],
+		"controls": [
+			{
+				"main_ui": {
+					"type": "panel",
+					"size": "$size",
+					"controls": [
+						{
+							"panel_name": {
+								"type": "panel",
+								"size": "$size",
+								"bindings": [
+									{
+										"binding_type": "view",
+										"source_control_name": "image",
+										"resolve_sibling_scope": true,
+										"source_property_name": "(not (#texture = ''))",
+										"target_property_name": "#visible"
+									}
+								],
+
+								"controls": [
+									{
+										"hover_panel@server_form.hover_panel": {}
+									},
+
+									{
+										"texture": {
+											"layer": 150,
+											"type": "image",
+											"size": [ "50%", "50%" ],
+											"offset": [ 0, 0 ],
+											"bindings":[
+												{
+													"binding_name": "#form_button_texture",
+													"binding_name_override": "#texture",
+													"binding_type": "collection",
+													"binding_collection_name": "form_buttons"
+												},
+												{
+													"binding_name": "#form_button_texture_file_system",
+													"binding_name_override": "#texture_file_system",
+													"binding_type": "collection",
+													"binding_collection_name": "form_buttons"
+												},
+												{
+													"binding_type": "view",
+													"source_property_name": "(not ((#texture = '') or (#texture = 'loading')))",
+													"target_property_name": "#visible"
+												}
+											]
+										}
+									},
+
+									{
+										"frame_1": {
+											"layer": 100,
+											"type": "image",
+											"size": [ "85%", "85%" ],
+											"offset": [ 0, 0 ],
+											"texture": "textures/stamprally/ui/panel_1",
+											"bindings": [
+												{
+													"binding_name": "#form_button_text",
+													"binding_type": "collection",
+													"binding_collection_name": "form_buttons"
+												},
+												{
+													"binding_name": "#form_button_text"
+												},
+												{
+													"binding_type": "view",
+													"source_property_name": "((#form_button_text / '§1') > 0)",
+													"target_property_name": "#visible"
+												}
+											],
+											"controls": [
+												{
+													"is_get": {
+														"type": "image",
+														"color": [ 1, 0.7, 0 ],
+														"offset": [ 0, 0 ],
+														"texture": "textures/stamprally/ui/panel_1",
+														"bindings": [
+															{
+																"binding_name": "#form_button_text",
+																"binding_type": "collection",
+																"binding_collection_name": "form_buttons"
+															},
+															{
+																"binding_name": "#form_button_text"
+															},
+															{
+																"binding_type": "view",
+																"source_property_name": "((#form_button_text / '§1§g') > 0)",
+																"target_property_name": "#visible"
+															}
+														]
+													}
+												}
+											]
+										}
+									},
+									{
+										"frame_2": {
+											"layer": 100,
+											"type": "image",
+											"size": [ "85%", "85%" ],
+											"offset": [ 0, 0 ],
+											"texture": "textures/stamprally/ui/panel_2",
+											"bindings": [
+												{
+													"binding_name": "#form_button_text",
+													"binding_type": "collection",
+													"binding_collection_name": "form_buttons"
+												},
+												{
+													"binding_name": "#form_button_text"
+												},
+												{
+													"binding_type": "view",
+													"source_property_name": "((#form_button_text / '§2') > 0)",
+													"target_property_name": "#visible"
+												}
+											],
+											"controls": [
+												{
+													"is_get": {
+														"type": "image",
+														"color": [ 1, 0.7, 0 ],
+														"offset": [ 0, 0 ],
+														"texture": "textures/stamprally/ui/panel_2",
+														"bindings": [
+															{
+																"binding_name": "#form_button_text",
+																"binding_type": "collection",
+																"binding_collection_name": "form_buttons"
+															},
+															{
+																"binding_name": "#form_button_text"
+															},
+															{
+																"binding_type": "view",
+																"source_property_name": "((#form_button_text / '§2§g') > 0)",
+																"target_property_name": "#visible"
+															}
+														]
+													}
+												}
+											]
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		]
+	},
+
+
+	"roadmap_panel_main_2": {
+		"offset": [ 0, 0 ],
+		"type": "panel",
+		"size": ["100%", "100%"],
+		"layer": 1,
+		"anchor_from": "top_left",
+		"anchor_to": "top_left",
+		"controls": [
+			{
+				"back_screen": {
+					"size": [ "100%", "100%" ],
+					"type": "image",
+					"texture": "textures/blocks/cherry_planks", 
+					"tiled": true
+				}
+			},
+			{
+				"scrolling_panel@common.scrolling_panel": {
+					"anchor_to": "top_left",
+					"anchor_from": "top_left",
+					"$show_background": false,
+					"offset": [ 0, 20 ],
+					"size": ["100%", "100%"],
+					"$scrolling_content": "server_form.scrolling_panel_2",
+					"$scroll_size": [5, "100% - 4px"],
+					"$scrolling_pane_size": ["100% - 4px", "100% - 2px"],
+					"$scrolling_pane_offset": [2, -10],
+					"$scroll_bar_right_padding_size": [0, 0]
+				}
+			},
+			{
+				"branchs": {
+					"size": [ "100%", "100%" ],
+					"type": "panel",
+					"controls": [
+						{
+							"hor_1": {
+								"size": [ 240, 3 ],
+								"offset": [ 0, -23.5 ],
+								"type": "image",
+								"texture": "textures/stamprally/ui/bar_hor"
+							}
+						},
+
+						{
+							"hor_2": {
+								"size": [ 240, 3 ],
+								"offset": [ -10, 15.5 ],
+								"type": "image",
+								"texture": "textures/stamprally/ui/bar_hor"
+							}
+						}
+					]
+				}
+			}
+		]
+	},
+
+	"scrolling_panel_2": {
+		"type": "panel",
+		"size": ["100%", "100%c"],
+		"controls": [
+			{
+				"long_form_dynamic_buttons_panel": {
+					"type": "grid",
+					"size": ["100%", "100%c"],
+					"grid_dimensions": [3, 3],
+					"grid_item_template": "server_form.key_2",
+					"grid_fill_direction": "horizontal",
+					"grid_rescaling_type": "horizontal",
+					"anchor_from": "center",
+					"anchor_to": "center",
+
+					"factory": {
+						"name": "buttons",
+						"control_name": "server_form.key_2"
+					},
+
+					"collection_name": "form_buttons",
+					"bindings": [
+						{
+							"binding_name": "#form_button_length",
+							"binding_name_override": "#maximum_grid_items"
+						}
+					]
+				}
+			}
+		]
+	},
+
+	"key_2": {
+		"$size": [ 32, 32 ],
+
+		"type": "panel",
+		"size": [80, 40],
+		"controls": [
+			{
+				"main_ui": {
+					"type": "panel",
+					"size": "$size",
+					"controls": [
+						{
+							"panel_name": {
+								"type": "panel",
+								"size": "$size",
+								"bindings": [
+									{
+										"binding_type": "view",
+										"source_control_name": "image",
+										"resolve_sibling_scope": true,
+										"source_property_name": "(not (#texture = ''))",
+										"target_property_name": "#visible"
+									}
+								],
+
+								"controls": [
+									{
+										"hover_panel@server_form.hover_panel": {}
+									},
+
+									{
+										"texture": {
+											"layer": 150,
+											"type": "image",
+											"size": [ "50%", "50%" ],
+											"offset": [ 0, 0 ],
+											"bindings":[
+												{
+													"binding_name": "#form_button_texture",
+													"binding_name_override": "#texture",
+													"binding_type": "collection",
+													"binding_collection_name": "form_buttons"
+												},
+												{
+													"binding_name": "#form_button_texture_file_system",
+													"binding_name_override": "#texture_file_system",
+													"binding_type": "collection",
+													"binding_collection_name": "form_buttons"
+												},
+												{
+													"binding_type": "view",
+													"source_property_name": "(not ((#texture = '') or (#texture = 'loading')))",
+													"target_property_name": "#visible"
+												}
+											]
+										}
+									},
+
+									{
+										"frame_1": {
+											"layer": 100,
+											"type": "image",
+											"size": [ "85%", "85%" ],
+											"offset": [ 0, 0 ],
+											"texture": "textures/stamprally/ui/panel_1",
+											"bindings": [
+												{
+													"binding_name": "#form_button_text",
+													"binding_type": "collection",
+													"binding_collection_name": "form_buttons"
+												},
+												{
+													"binding_name": "#form_button_text"
+												},
+												{
+													"binding_type": "view",
+													"source_property_name": "((#form_button_text / '§1') > 0)",
+													"target_property_name": "#visible"
+												}
+											],
+											"controls": [
+												{
+													"is_get": {
+														"type": "image",
+														"color": [ 1, 0.7, 0 ],
+														"offset": [ 0, 0 ],
+														"texture": "textures/stamprally/ui/panel_1",
+														"bindings": [
+															{
+																"binding_name": "#form_button_text",
+																"binding_type": "collection",
+																"binding_collection_name": "form_buttons"
+															},
+															{
+																"binding_name": "#form_button_text"
+															},
+															{
+																"binding_type": "view",
+																"source_property_name": "((#form_button_text / '§1§g') > 0)",
+																"target_property_name": "#visible"
+															}
+														]
+													}
+												}
+											]
+										}
+									},
+									{
+										"frame_2": {
+											"layer": 100,
+											"type": "image",
+											"size": [ "85%", "85%" ],
+											"offset": [ 0, 0 ],
+											"texture": "textures/stamprally/ui/panel_2",
+											"bindings": [
+												{
+													"binding_name": "#form_button_text",
+													"binding_type": "collection",
+													"binding_collection_name": "form_buttons"
+												},
+												{
+													"binding_name": "#form_button_text"
+												},
+												{
+													"binding_type": "view",
+													"source_property_name": "((#form_button_text / '§2') > 0)",
+													"target_property_name": "#visible"
+												}
+											],
+											"controls": [
+												{
+													"is_get": {
+														"type": "image",
+														"color": [ 1, 0.7, 0 ],
+														"offset": [ 0, 0 ],
+														"texture": "textures/stamprally/ui/panel_2",
+														"bindings": [
+															{
+																"binding_name": "#form_button_text",
+																"binding_type": "collection",
+																"binding_collection_name": "form_buttons"
+															},
+															{
+																"binding_name": "#form_button_text"
+															},
+															{
+																"binding_type": "view",
+																"source_property_name": "((#form_button_text / '§2§g') > 0)",
+																"target_property_name": "#visible"
+															}
+														]
+													}
+												}
+											]
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		]
+	},
+
+
+	"hover_panel": {
+		"layer": 200,
+		"type": "button",
+		"hover_control": "hover",
+		"controls": [
+			{
+				"hover": {
+
+					"type": "custom",
+					"renderer": "hover_text_renderer",
+					"allow_clipping": false,
+					"controls": [
+						{
+							"image": {
+								//"allow_clipping": true,
+								"layer": 10,
+								"type": "image",
+								"texture": "textures/stamprally/ui/background",
+								"size": [ "100%c + 4px", "100%c + 4px" ],
+								//"offset": [ "50%c + 10px", 0 ],
+								"anchor_from": "top_right",
+								"anchor_to": "top_right",
+								"offset": [ "100%c + 4px", 0 ],
+
+								"controls": [
+									{
+										"text": {
+											//"allow_clipping": true,
+											"layer": 11,
+											"type": "label",
+											"text": "#text",
+											"offset": [ "2px", "2px" ],
+											"anchor_from": "top_left",
+											"anchor_to": "top_left",
+											"bindings": [
+												{
+													"binding_name": "#form_button_text",
+													"binding_type": "collection",
+													"binding_collection_name": "form_buttons"
+												},
+												{
+													"binding_name": "#form_button_text"
+												},
+
+												{
+													"binding_type": "view",
+													"source_property_name": "( ((#form_button_text) - ('%.9s' * #form_button_text)) )",
+													"target_property_name": "#text"
+												}
+											],
+											"controls": [
+												{
+													"title_panel": {
+														//"allow_clipping": true,
+														"color": [ 0, 0.66, 1 ],
+														"layer": -2,
+														"type": "image",
+														"texture": "textures/stamprally/ui/background",
+														"size": [ "100% + 4px", "13.5px" ],
+														"offset": [ "2px", "-2px" ],
+														"anchor_from": "top_right",
+														"anchor_to": "top_right"
+													}
+												},
+												{
+													"title_panel_get": {
+														//"allow_clipping": true,
+														"color": [ 1, 0.7, 0 ],
+														"layer": -1,
+														"type": "image",
+														"texture": "textures/stamprally/ui/background",
+														"size": [ "100% + 4px", "13.5px" ],
+														"offset": [ "2px", "-2px" ],
+														"anchor_from": "top_right",
+														"anchor_to": "top_right",
+														"bindings": [
+															{
+																"binding_name": "#form_button_text",
+																"binding_type": "collection",
+																"binding_collection_name": "form_buttons"
+															},
+															{
+																"binding_name": "#form_button_text"
+															},
+															{
+																"binding_type": "view",
+																"source_property_name": "((#form_button_text / '§g') > 0)",
+																"target_property_name": "#visible"
+															}
+														]
+													}
+												}
+											]
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		]
+	}
+
+	
+}

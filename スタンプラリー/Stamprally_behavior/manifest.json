@@ -1,0 +1,34 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "スタンプラリー [ver0.1.0]",
+    "description": "",
+    "version": [ 0, 1, 0 ],
+    "uuid": "e4d1153d-e6d5-0bf0-130b-5c07b7700e19",
+    "min_engine_version": [ 1, 21, 120 ]
+  },
+  "modules": [
+    {
+      "type": "script",
+      "description": "script module",
+      "version": [ 1, 0, 0 ],
+      "uuid": "17e0555e-694b-4f67-a0f1-c05d8c7bde9e",
+      "language": "javascript",
+      "entry": "scripts/main.js"
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "2.6.0-beta"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "2.0.0"
+    },
+    {
+      "module_name": "@minecraft/debug-utilities",
+      "version": "1.0.0-beta"
+    }
+  ]
+}

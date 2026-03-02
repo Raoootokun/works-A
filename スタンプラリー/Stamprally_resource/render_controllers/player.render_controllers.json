@@ -1,0 +1,11 @@
+{
+  "format_version": "1.8.0",
+  "render_controllers": {
+
+    "controller.render.player.board": {
+      "geometry": "Geometry.board",
+      "materials": [ { "*": "Material.default" } ],
+      "textures": [ "Texture.board" ]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "ケイドロ [ver1.0.0]",
+    "description": "",
+    "version": [ 1, 0, 0 ],
+    "uuid": "e6d4335d-e6d0-0bf0-548b-5c07b7700e19",
+    "min_engine_version": [ 1, 21, 130 ]
+  },
+  "modules": [
+    {
+      "type": "script",
+      "description": "script module",
+      "version": [ 1, 0, 0 ],
+      "uuid": "17e0179e-549b-4f54-a0f1-c96d8c7bde9e",
+      "language": "javascript",
+      "entry": "scripts/main.js"
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "2.6.0-beta"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "2.0.0"
+    }
+  ]
+}
