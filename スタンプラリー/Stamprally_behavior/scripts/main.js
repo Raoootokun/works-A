@@ -12,7 +12,7 @@ import "./events";
 import { Shape } from "./Shape";
 import { Stamprally } from "./Stamprally";
 
-const VERSION = [ 0, 1, 0 ];
+const VERSION = [ 1, 0, 0 ];
 WorldLoad.subscribe(ev => {
     ev.reloadLog("§bスタンプラリー", VERSION);
 

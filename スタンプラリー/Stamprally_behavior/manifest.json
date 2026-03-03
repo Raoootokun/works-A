@@ -1,9 +1,9 @@
 {
   "format_version": 2,
   "header": {
-    "name": "スタンプラリー [ver0.1.0]",
+    "name": "スタンプラリー [ver1.0.0]",
     "description": "",
-    "version": [ 0, 1, 0 ],
+    "version": [ 1, 0, 0 ],
     "uuid": "e4d1153d-e6d5-0bf0-130b-5c07b7700e19",
     "min_engine_version": [ 1, 21, 120 ]
   },
