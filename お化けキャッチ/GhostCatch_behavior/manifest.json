@@ -1,9 +1,9 @@
 {
     "format_version": 2,
     "header": {
-        "name": "お化けキャッチ [ver0.1.0]",
+        "name": "お化けキャッチ [ver1.0.0]",
         "description": "",
-        "version": [ 0, 1, 0 ],
+        "version": [ 1, 0, 0 ],
         "uuid": "e6d5375d-e3d9-7bf5-130b-5c07b7700e19",
         "min_engine_version": [ 1, 21, 120 ]
     },
