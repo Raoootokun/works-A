@@ -7,7 +7,7 @@ import "./events";
 import { Game } from "./Game";
 import { ExHud } from "./lib/ExHud";
 
-const VERSION = [ 0, 1, 0 ];
+const VERSION = [ 1, 0, 0 ];
 WorldLoad.subscribe(ev => {
     ev.reloadLog("§bお化けキャッチ", VERSION);
 
