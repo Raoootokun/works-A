@@ -1,1 +1,0 @@
-scriptevent fg:play
