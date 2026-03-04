@@ -55,7 +55,7 @@ export class CommonUtil {
 }
 
 
-const PREFIX = "game";
+const PREFIX = "gm";
 const COMMAND_LIST = [
     { //exit
         command: {
