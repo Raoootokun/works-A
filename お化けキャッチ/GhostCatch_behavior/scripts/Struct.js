@@ -130,8 +130,8 @@ export class Struct {
      */
     static place(struct1, struct2) {
         const overworld = world.getDimension(`overworld`);
-        const from = Vector.add(Position.STAGE.center, { x:-10, y:0, z:-4 });
-        const to = Vector.add(Position.STAGE.center, { x:10, y:11, z:4 });
+        const from = Vector.add(Position.STAGE.center, { x:-4, y:0, z:-10 });
+        const to = Vector.add(Position.STAGE.center, { x:4, y:11, z:10 });
         overworld.fillBlocks(new BlockVolume(from, to), `air`, { blockFilter:{ excludeTypes:[`minecraft:soul_lantern`] } });
 
         const size1 = Vector.subtract(world.structureManager.get(struct1.id).size, 1);

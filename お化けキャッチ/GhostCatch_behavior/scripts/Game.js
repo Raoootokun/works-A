@@ -6,6 +6,7 @@ import { Struct } from "./Struct";
 import { log, Util } from "./lib/Util";
 import { Floor } from "./Floor";
 import { CommonUtil } from "./CommonUtil";
+import { Vector } from "./lib/Vector";
 
 
 const POINT = {
@@ -190,13 +191,15 @@ export class Game {
         Game.turn += 1;
 
         //壁を設置
+        const overworld = world.getDimension(`overworld`);
         overworld.fillBlocks(new BlockVolume(Position.WALL.from, Position.WALL.to), `glass`);
-        const from = Vector.add(Position.STAGE.center, { x:-10, y:0, z:-4 });
-        const to = Vector.add(Position.STAGE.center, { x:10, y:11, z:4 });
-        overworld.fillBlocks(new BlockVolume(from, to), `air`, { blockFilter:{ excludeTypes:[`minecraft:soul_lantern`] } });
+
+        
         
         //ステージをリセット
-        const overworld = world.getDimension(`overworld`);
+        const from = Vector.add(Position.STAGE.center, { x:-4, y:0, z:-10 });
+        const to = Vector.add(Position.STAGE.center, { x:4, y:11, z:10 });
+        overworld.fillBlocks(new BlockVolume(from, to), `air`, { blockFilter:{ excludeTypes:[`minecraft:soul_lantern`] } });
 
         //ステージにテレポート
         for(const player of Game.players) {
@@ -322,7 +325,7 @@ export class Game {
             });
             player.sendMessage(`§6お化けキャッチ FINISH!!`);
             player.teleport(Position.CENTER);
-            Util.playSound(player, `block.end_portal.spawn`, { delay:3 });
+            Util.playSoundP(player, `block.end_portal.spawn`, { delay:3 });
 
             const point = world.scoreboard.getObjective(`gc_score`).getScore(player);
             results.push({ player:player, point:point, index:0 });
@@ -409,7 +412,7 @@ export class Game {
             fadeInDuration:0, stayDuration:60, fadeOutDuration:20,
             subtitle:`${(Game.turn > Math.round(MAX_TURN / 2)) ? `§6+${point}` : `§f+${point}`  }`
         });
-        Util.playSound(player, `random.levelup`, { pitch:1.2, count:5 });
+        Util.playSoundP(player, `random.levelup`, { pitch:1.2, count:5 });
     }
 
 
@@ -423,11 +426,11 @@ export class Game {
         player.onScreenDisplay.setTitle(`§c>> 脱落 <<`, {
             fadeInDuration:0, stayDuration:60, fadeOutDuration:20,
         });
+        Util.playSoundP(player, `mob.evocation_illager.prepare_summon`, { count:2, pitch:1.2 });
 
         system.runTimeout(() => {
             player.teleport(Position.DIE);
             player.extinguishFire();
-            Util.playSound(player, `mob.evocation_illager.prepare_summon`, { count:5, pitch:1.2, delay:3 });
         }, 20 * 2);
     }
 
