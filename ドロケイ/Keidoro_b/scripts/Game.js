@@ -9,11 +9,10 @@ import { Marker } from "./Marker";
 import { Vector } from "./lib/Vector";
 import { Generator } from "./Generator";
 import { CommonUtil } from "./CommonUtil";
+import { Config } from "./Config";
+import { Armor } from "./Armor";
 
 
-const POLICE_OPEN_TIME = 30;
-const GLOW_TIME = 240;
-const GLOW_STAY_COUNT = 5;
 
 
 export class Game {
@@ -57,7 +56,7 @@ export class Game {
         //roleリセット
         Role.set(player);
  
-        player.sendMessage(`ケイドロに参加しました。\n§dゲームマスター§fが開始するまでお待ちください。`);
+        player.sendMessage(`ドロケイに参加しました。\n§dゲームマスター§fが開始するまでお待ちください。`);
         player.addTag(`kd_join`);
         player.playSound(`random.orb`, { pitch:1.2 });
         if(Position.INIT)player.teleport(Position.INIT);
@@ -79,8 +78,9 @@ export class Game {
         //roleリセット
         Role.set(player);
         Marker.set(player, 0);
+        Armor.detach(player);
 
-        player.sendMessage(`ケイドロから退出しました。`);
+        player.sendMessage(`ドロケイから退出しました。`);
         player.removeTag(`kd_join`);
         player.removeTag(`kd_play`);
         player.playSound(`random.orb`, { pitch:1.2 });
@@ -102,7 +102,7 @@ export class Game {
      */
     static load(player) {
         //プレイ中ではない場合
-        if(Game.getState(player) != `play`)return;
+        if(!Game.getState(player))return;
 
         //ゲームが進行中かどうか
         if(!Game.ingame)return Game.exit(player);
@@ -136,16 +136,16 @@ export class Game {
      */
     static startCountDown(gameMaster) {
         //ゲームが進行中の場合
-        if(Game.ingame)return gameMaster.sendMessage(`§6[ケイドロ] §c現在ゲームを進行中です`);
+        if(Game.ingame)return gameMaster.sendMessage(`§6[ドロケイ] §c現在ゲームを進行中です`);
 
         //参加プレイヤーを取得
         Game.players = world.getPlayers({ tags:[ `kd_join` ] });
         //参加プレイヤーが2人以上いない場合
-        // if(Game.players.length < 2)return gameMaster.sendMessage(`§6[ケイドロ] §c参加人数が足りません(現在: ${Game.players.length}人、必要: 2人以上)`);
+        // if(Game.players.length < 2)return gameMaster.sendMessage(`§6[ドロケイ] §c参加人数が足りません(現在: ${Game.players.length}人、必要: 2人以上)`);
         // //警察がいない場合
-        // if(Game.players.filter(p => Police.is(p)).length == 0)return gameMaster.sendMessage(`§6[ケイドロ] §c警察の人数が足りません(現在: 0人、必要: 1人以上)`);
+        // if(Game.players.filter(p => Police.is(p)).length == 0)return gameMaster.sendMessage(`§6[ドロケイ] §c警察の人数が足りません(現在: 0人、必要: 1人以上)`);
         // //泥棒がいない場合
-        // if(Game.players.filter(p => !Police.is(p)).length == 0)return gameMaster.sendMessage(`§6[ケイドロ] §c泥棒の人数が足りません(現在: 0人、必要: 1人以上)`);
+        // if(Game.players.filter(p => !Police.is(p)).length == 0)return gameMaster.sendMessage(`§6[ドロケイ] §c泥棒の人数が足りません(現在: 0人、必要: 1人以上)`);
 
 
         let cnt = 3;
@@ -174,7 +174,7 @@ export class Game {
      */
     static start() {
         Game.ingame = true;
-        Game.time = POLICE_OPEN_TIME;
+        Game.time = Config.POLICE_OPEN_TIME;
         Game.glowTime = 0;
         Game.phase = 1;
 
@@ -188,7 +188,7 @@ export class Game {
             player.removeTag(`kd_join`);
             player.addTag(`kd_play`);
 
-            player.onScreenDisplay.setTitle(`§fケイドロ`, {
+            player.onScreenDisplay.setTitle(`§fドロケイ`, {
                 fadeInDuration:0, stayDuration:100, fadeOutDuration:20,
                 subtitle: `§6START`
             });
@@ -196,14 +196,14 @@ export class Game {
 
             const role = Role.get(player)
             if(role == `police`) { //警察
-                player.sendMessage(`§6ケイドロ START!!\n§f制限時間内に泥棒を全員捕まえろ!!`);
+                player.sendMessage(`§6ドロケイ START!!\n§f制限時間内に泥棒を全員捕まえろ!!`);
                 player.teleport(Position.PRISON);
             }else { //泥棒
                 Role.set(player, `thief`);
                 Role.setLife(player, 1);
                 Role.setResistane(player, 0);
 
-                player.sendMessage(`§6ケイドロ START!!\n§f制限時間まで警察から逃げきれ!!`);
+                player.sendMessage(`§6ドロケイ START!!\n§f制限時間まで警察から逃げきれ!!`);
                 player.teleport(Position.RESPAWN);
             }
             
@@ -218,9 +218,9 @@ export class Game {
 
                 player.onScreenDisplay.setTitle(`§f`, {
                     fadeInDuration:0, stayDuration:60, fadeOutDuration:20,
-                    subtitle: `§c警察開放まで残り: ${25}秒`
+                    subtitle: `§c警察開放まで残り: ${Game.time}秒`
                 });
-                player.sendMessage(`§c警察開放まで残り: ${25}秒!!`);
+                player.sendMessage(`§c警察開放まで残り: ${Game.time}秒!!`);
                 Util.playSoundP(player, `random.levelup`, { pitch:0.7 });    
             }
         }, 20 * 3);
@@ -233,8 +233,8 @@ export class Game {
     static openPolice() {
         if(!Game.ingame)return;
 
-        Game.time = 1200;
-        Game.glowTime = GLOW_TIME;
+        Game.time = Config.TIME;
+        Game.glowTime = Config.GLOW_INTERVAL_TIME;
         Game.phase = 2;
 
         for(const player of Game.players) {
@@ -269,11 +269,11 @@ export class Game {
         let winPlayers = [];
         if(finishType == `police`) { 
             subtitle = `§6INISH\n§c>> 警察の勝利 <<`;
-            message = `§6ケイドロ FINISH!!\n§c>> 警察の勝利 <<`;
+            message = `§6ドロケイ FINISH!!\n§c>> 警察の勝利 <<`;
         }
         if(finishType == `thief`) { 
             subtitle = `§6INISH\n§b>> 泥棒の勝利 <<`;
-            message = `§6ケイドロ FINISH!!\n§b>> 泥棒の勝利 <<`;
+            message = `§6ドロケイ FINISH!!\n§b>> 泥棒の勝利 <<`;
             winPlayers = Role.getThiefs(Game.players).filter(p => Role.getLife(p));
         }
 
@@ -281,8 +281,10 @@ export class Game {
             for(const player of Game.players) {
                 if(!player || !player.isValid)continue;
 
-                player.onScreenDisplay.setTitle(`§fケイドロ`, {
-                    fadeInDuration:0, stayDuration:60, fadeOutDuration:20,
+                player.removeEffect(`slowness`);
+                player.removeEffect(`blindness`);
+                player.onScreenDisplay.setTitle(`§fドロケイ`, {
+                    fadeInDuration:0, stayDuration:100, fadeOutDuration:20,
                     subtitle: subtitle
                 });
                 player.sendMessage(message + `\n§b生存者: §f${winPlayers.map(p => p.name).join(`§b, §f`)}\n\n§f30秒後にテレポートします`);
@@ -322,6 +324,8 @@ export class Game {
             player.addTag(`kd_join`);
             player.removeEffect(`resistance`);
             player.removeEffect(`saturation`);
+            player.removeEffect(`slowness`);
+            player.removeEffect(`blindness`);
             player.nameTag = player.name;
 
             Role.set(player);
@@ -340,18 +344,17 @@ export class Game {
      */
     static glow() {
          Game.glowTime = -1;
-        const glowCount = 30;
         
         Util.sendMessage(Game.players, `§c泥棒が発光した!!`);
 
         for(const thief of Role.getThiefs(Game.players.filter(p => Role.getLife(p)))) {
             if(!thief || !thief.isValid)continue;
-            Marker.set(thief, 20 * glowCount);
+            Marker.set(thief, 20 * Config.GLOW_TIME);
         }
 
         system.runTimeout(() => {
-            Game.glowTime = GLOW_TIME;
-        }, 20 * glowCount);
+            Game.glowTime = Config.GLOW_INTERVAL_TIME;
+        }, 20 * Config.GLOW_TIME);
     }
 
 
@@ -362,6 +365,9 @@ export class Game {
     static movingGlow(player) {
         if(player.stayTick == undefined)player.stayTick = 0;
 
+        //強制発光時間なら
+        if(Game.glowTime == -1)return;
+
         const velo = player.getVelocity();
         velo.y = 0; //y軸は無視
 
@@ -370,10 +376,10 @@ export class Game {
 
          
         if(len <= 0.20) { //止まっている場合は +
-            if(GLOW_STAY_COUNT * 20 > player.stayTick)player.stayTick += 1;
-            if(GLOW_STAY_COUNT * 20 <= player.stayTick) {
+            if(Config.STAY_GLOW_TIME * 20 > player.stayTick)player.stayTick += 1;
+            if(Config.STAY_GLOW_TIME * 20 <= player.stayTick) {
                 //発光させる
-                if(!Marker.get(player))Marker.set(player, 20);
+                Marker.set(player, 20);
                 ExHud.actionbar(player, `§c>> 止まると発光してしまう!! <<`);
 
                 if(system.currentTick % 20 == 0) {

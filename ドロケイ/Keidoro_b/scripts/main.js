@@ -8,10 +8,11 @@ import { Game } from "./Game";
 import { Role } from "./Role";
 import { Marker } from "./Marker";
 import { Generator } from "./Generator";
+import { Armor } from "./Armor";
 
 export const VERSION = [ 1, 1, 0 ];
 WorldLoad.subscribe(ev => {
-    ev.reloadLog(`§bケイドロ`, VERSION); 
+    ev.reloadLog(`§bドロケイ`, VERSION); 
 
     //スコアボードを作成
     if(!world.scoreboard.getObjective(`kd_info`))world.scoreboard.addObjective(`kd_info`);
@@ -37,19 +38,29 @@ WorldLoad.subscribe(ev => {
 
                 ExHud.sidebarShow(player, `kd_info`);
                 ExHud.sidebarResetAll(player, `kd_info`);
-                ExHud.sidebarDisplay(player, `kd_info`, `ケイドロ`);
+                ExHud.sidebarDisplay(player, `kd_info`, `ドロケイ`);
 
                 if(state == `join`) {
+                    const role = Role.get(player);
+                    if(role == `police`) {
+                        player.nameTag = `§c${player.name}`;
+                        Armor.attach(player);
+                        ExHud.actionbar(player, `§dゲームマスター§fが開始するまでお待ちください\n§c>> あなたは警察です <<`);
+                    }else {
+                        player.nameTag = `§b${player.name}`;
+                        Armor.detach(player);
+                        ExHud.actionbar(player, `§dゲームマスター§fが開始するまでお待ちください\n§b>> あなたは泥棒です <<`);
+                    }
+
                     ExHud.sidebarSet(player, `kd_info`, `- §b参加人数: §f${playersJ.length}§b人`, 10003, true);
                     ExHud.sidebarSet(player, `kd_info`, `- §6泥棒: §f${playersJ.length - policesJ.length}§6人`, 10002, true);
                     ExHud.sidebarSet(player, `kd_info`, `- §c警察: §f${policesJ.length}§c人`, 10001, true);
-
-                    ExHud.actionbar(player, `§dゲームマスター§fが開始するまでお待ちください`);
                 }else if(state == `play`) {
                     const role = Role.get(player);
                     const life = Role.getLife(player);
                     if(role == `police`) { //警察
                         player.nameTag = `§c${player.name}`;
+                        Armor.attach(player);
 
                         if(Game.phase == 1)ExHud.sidebarSet(player, `kd_info`, `- §c警察開放まで: §f${Game.time}§c秒`, 10010, true);
                         if(Game.phase == 2 || Game.phase == 3) {
@@ -57,22 +68,34 @@ WorldLoad.subscribe(ev => {
                             ExHud.sidebarSet(player, `kd_info`, `- §6泥棒: §f${aliveThiefsP.length}§6人`, 10004, true);
                             ExHud.sidebarSet(player, `kd_info`, `- §c警察: §f${policesP.length}§c人`, 10003, true);
                         }
+
+                        ExHud.actionbar(player, `§c>> あなたは警察です <<`);
                     }
                     
                     if(role == `thief`) { //泥棒
                         player.nameTag = ``;
+                        Armor.detach(player);
 
                         if(Game.phase == 1)ExHud.sidebarSet(player, `kd_info`, `- §c警察開放まで: §f${Game.time}§c秒`, 10010, true);
                         if(Game.phase == 2) {
                             ExHud.sidebarSet(player, `kd_info`, `- §a残り時間: §f${Game.time}§a秒`, 10010, true);
                             ExHud.sidebarSet(player, `kd_info`, `- §6泥棒: §f${aliveThiefsP.length}§6人`, 10004, true);
                             ExHud.sidebarSet(player, `kd_info`, `- §c警察: §f${policesP.length}§c人`, 10003, true);
-                            ExHud.sidebarSet(player, `kd_info`, `- §b残機: §f${life}§b`, 10002, true);
+
+                            //残機
+                            if(life > -1) ExHud.sidebarSet(player, `kd_info`, `- §b残機: §f${life}§b`, 10002, true);
+                            
 
                             const glow = Marker.get(player);
                             if(glow) {
                                 if(glow <= 20) ExHud.sidebarSet(player, `kd_info`, `- §c発光中: §f1§c秒`, 10001, true);
-                                else ExHud.sidebarSet(player, `kd_info`, `- §c発光中: §f${Math.floor(glow / 20)}§c秒`, 10001, true);
+                                else {
+                                    ExHud.sidebarSet(player, `kd_info`, `- §c発光中: §f${Math.floor(glow / 20)}§c秒`, 10001, true);
+                                    player.onScreenDisplay.setTitle(`§c`, {
+                                        fadeInDuration:0, stayDuration:20, fadeOutDuration:0,
+                                        subtitle: `§c>> 発光中: §f${Math.floor(glow / 20)}§c秒!! <<`
+                                    });
+                                }
                             }   
                             
 
@@ -104,11 +127,14 @@ WorldLoad.subscribe(ev => {
 
                         //水の使った場合
                         if(player.isInWater) player.addEffect(`poison`, 20 * 1, { amplifier:4, showParticles:true, });
+
+
+                        ExHud.actionbar(player, `§b>> あなたは泥棒です <<`);
                     }
 
                     
                     //発光までの時間
-                    if(Game.glowTime > -1) ExHud.sidebarSet(player, `kd_info`, `- §e発光まで: §f${Game.glowTime}§e秒`, 10009, true);
+                    if(Game.phase == 2 && Game.glowTime > -1) ExHud.sidebarSet(player, `kd_info`, `- §e発光まで: §f${Game.glowTime}§e秒`, 10009, true);
                 }
             };
 
@@ -153,9 +179,4 @@ WorldLoad.subscribe(ev => {
         }
         
     });
-
-    //Reload時の処理
-    for(const player of world.getPlayers()) {
-        Game.load(player);
-    }
 });

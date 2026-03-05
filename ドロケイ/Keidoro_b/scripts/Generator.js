@@ -8,10 +8,8 @@ import { Vector } from "./lib/Vector";
 import { Game } from "./Game";
 import { Role } from "./Role";
 import { StunGrenade } from "./StunGrenade";
+import { Config } from "./Config";
 
-
-const MAX_CHARGE = 300;
-const COOLDOWN = 60;
 
 
 export class Generator { 
@@ -67,7 +65,7 @@ export class Generator {
 
         Generator[number].charge += 1;
         //最大チャージされた場合
-        if(Generator[number].charge < MAX_CHARGE)return;
+        if(Generator[number].charge < Config.GENERATOR_CHARGE)return;
 
         //スタグレを配布
         for(const player of  Game.players) {
@@ -82,7 +80,7 @@ export class Generator {
         }
 
         //cd追加
-        Generator[number].cooldown = COOLDOWN;
+        Generator[number].cooldown = Config.GENERATOR_COOLDOWN;
     }
 
 
@@ -101,7 +99,7 @@ export class Generator {
 
     static getInfo(number) {
         return {
-            percent: Math.round((Generator[number].charge / MAX_CHARGE) * 100),
+            percent: Math.round((Generator[number].charge / Config.GENERATOR_CHARGE) * 100),
             cooldown: Generator[number].cooldown,
         };
     }
@@ -133,9 +131,9 @@ export class Generator {
         let txt = `§v発電機 - ${number}`;
         if(Generator[number].cooldown) txt += `\n§c使用可能まで: §f${Generator[number].cooldown}§c秒`;
         else {
-            const gage = createGage(Generator[number].charge, MAX_CHARGE, `§e=`, `§7=`);
-            const percent = Math.round((Generator[number].charge / MAX_CHARGE) * 100);
-            txt += ` §f| §v§f${percent}§v%%\n§f§l[${gage}§f§l]`;
+            const gage = createGage(Generator[number].charge, Config.GENERATOR_CHARGE, `§e=`, `§7=`);
+            const percent = Math.round((Generator[number].charge / Config.GENERATOR_CHARGE) * 100);
+            txt += ` §f| §v§f${percent}§v%\n§f§l[${gage}§f§l]`;
         }
 
         const players = Role.getThiefs(Game.players);

@@ -35,7 +35,7 @@ export class Position {
      */
     static showSettingForm(player) {
         const form = new ActionFormData();
-        form.title(`ケイドロ 座標設定`);
+        form.title(`ドロケイ 座標設定`);
         form.body(`登録する座標を選択してください`);
         form.button(`初期`);
         form.button(`復活`);
@@ -49,27 +49,27 @@ export class Position {
             if(res.selection == 0) {
                 WDB.set(`init`, pos)
                 Position.INIT = pos;
-                player.sendMessage(`§6[ケイドロ] §f初期座標を ${pos.x}, ${pos.y}, ${pos.z} に登録しました`);
+                player.sendMessage(`§6[ドロケイ] §f初期座標を ${pos.x}, ${pos.y}, ${pos.z} に登録しました`);
             }
             if(res.selection == 1) {
                 WDB.set(`respawn`, pos)
                 Position.RESPAWN = pos;
-                player.sendMessage(`§6[ケイドロ] §f復活座標を ${pos.x}, ${pos.y}, ${pos.z} に登録しました`);
+                player.sendMessage(`§6[ドロケイ] §f復活座標を ${pos.x}, ${pos.y}, ${pos.z} に登録しました`);
             }
             if(res.selection == 2) {
                 WDB.set(`prison`, pos)
                 Position.PRISON = pos;
-                player.sendMessage(`§6[ケイドロ] §f牢屋座標を ${pos.x}, ${pos.y}, ${pos.z} に登録しました`);
+                player.sendMessage(`§6[ドロケイ] §f牢屋座標を ${pos.x}, ${pos.y}, ${pos.z} に登録しました`);
             }
             if(res.selection == 3) {
                 WDB.set(`generator_1`, pos)
                 Position.GENERATOR_1 = pos;
-                player.sendMessage(`§6[ケイドロ] §f発電機1を ${pos.x}, ${pos.y}, ${pos.z} に登録しました`);
+                player.sendMessage(`§6[ドロケイ] §f発電機1を ${pos.x}, ${pos.y}, ${pos.z} に登録しました`);
             }
             if(res.selection == 4) {
                 WDB.set(`generator_2`, pos)
                 Position.GENERATOR_2 = pos;
-                player.sendMessage(`§6[ケイドロ] §f発電機2を ${pos.x}, ${pos.y}, ${pos.z} に登録しました`);
+                player.sendMessage(`§6[ドロケイ] §f発電機2を ${pos.x}, ${pos.y}, ${pos.z} に登録しました`);
             }
         })
     }

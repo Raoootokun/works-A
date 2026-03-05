@@ -58,7 +58,7 @@ export class StunGrenade {
         hitPlayer.addEffect(`slowness`, 20 * EFFECT_DURATION, { amplifier:10, showParticles:true });
         hitPlayer.addEffect(`blindness`, 20 * EFFECT_DURATION, { amplifier:10, showParticles:true });
 
-        dimension.playSound(`minecraft:wind_explosion_emitter`, Vector.addsY(hitPlayer.location, 1));
+        dimension.spawnParticle(`minecraft:wind_explosion_emitter`, Vector.addsY(hitPlayer.location, 1));
         Util.playSoundD(dimension, hitPlayer.location, `firework.blast`, { count:5 });
     }
 }
