@@ -165,7 +165,14 @@ export class CheckPoint {
      * @returns {[]}
      */
     static getCheckedList(player) {
-        return playerDB.get(player, `checkedPointList`) ?? [];
+        const arr = [];
+
+        for(let i=1; i<=Stamprally.MAX_STAMP_COUNT; i++) {
+            const pressed = player.getProperty(`property:stamp_${i}`);
+            if(pressed)arr.push(`${i}`);
+        }
+
+        return arr;
     };
 
     /**
@@ -174,11 +181,6 @@ export class CheckPoint {
      * @param {number} number 
      */
     static addCheckedList(player, number) {
-        const list = CheckPoint.getCheckedList(player);
-        list.push(number);
-        playerDB.set(player, `checkedPointList`, list);
-
-        const checkedStampCount = player.getProperty(`property:checked_stamp_count`);
-        player.setProperty(`property:checked_stamp_count`, checkedStampCount+1);
+        player.setProperty(`property:stamp_${number}`, true);
     }
 }

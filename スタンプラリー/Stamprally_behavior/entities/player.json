@@ -1,36 +1,70 @@
 {
     "format_version": "1.21.0",
     "minecraft:entity": {
-        "description": {
-        "identifier": "minecraft:player",
-        "spawn_category": "creature",
-        "is_spawnable": false,
-        "is_summonable": false,
-        "properties": {
-            "property:checked_stamp_count": {
-                "type": "int",
-                "default": 0,
-                "range": [ 0, 20 ],
-                "client_sync": true
-            },
-            "property:stamp_max_pressed": {
-                "type": "bool",
-                "default": false,
-                "client_sync": true
-            },
-            "property:rotation": {
-                "type": "int",
-                "default": 0,
-                "range": [ -360, 360 ],
-                "client_sync": true
-            },
-            
-            "property:marker": {
-                "type": "bool",
-                "default": false,
-                "client_sync": true
-            }
+      "description": {
+      "identifier": "minecraft:player",
+      "spawn_category": "creature",
+      "is_spawnable": false,
+      "is_summonable": false,
+      "properties": {
+          "property:stamp_1": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
+        },
+        "property:stamp_2": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
+        },
+        "property:stamp_3": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
+        },
+        "property:stamp_4": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
+        },
+        "property:stamp_5": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
+        },
+        "property:stamp_6": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
+        },
+        "property:stamp_7": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
+        },
+        "property:stamp_8": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
+        },
+        "property:stamp_max_pressed": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
+        },
+        "property:rotation": {
+          "type": "int",
+          "default": 0,
+          "range": [ -360, 360 ],
+          "client_sync": true
+        },
+        
+        "property:marker": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
         }
+      }
     },
 
     "component_groups": {

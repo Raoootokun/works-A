@@ -13,43 +13,28 @@
 					"scale": "c.is_first_person ? 0.2 : 0.09"
 				},
 				"stamp_1": {
-					"scale": "q.property('property:checked_stamp_count') >= 1  ? 1 : 0.0"
+					"scale": "q.property('property:stamp_1') ? 1 : 0.0"
 				},
 				"stamp_2": {
-					"scale": "q.property('property:checked_stamp_count') >= 2  ? 1 : 0.0"
+					"scale": "q.property('property:stamp_2') ? 1 : 0.0"
 				},
 				"stamp_3": {
-					"scale": "q.property('property:checked_stamp_count') >= 3  ? 1 : 0.0"
+					"scale": "q.property('property:stamp_3') ? 1 : 0.0"
 				},
 				"stamp_4": {
-					"scale": "q.property('property:checked_stamp_count') >= 4  ? 1 : 0.0"
+					"scale": "q.property('property:stamp_4') ? 1 : 0.0"
 				},
 				"stamp_5": {
-					"scale": "q.property('property:checked_stamp_count') >= 5  ? 1 : 0.0"
+					"scale": "q.property('property:stamp_5') ? 1 : 0.0"
 				},
 				"stamp_6": {
-					"scale": "q.property('property:checked_stamp_count') >= 6  ? 1 : 0.0"
+					"scale": "q.property('property:stamp_6') ? 1 : 0.0"
 				},
 				"stamp_7": {
-					"scale": "q.property('property:checked_stamp_count') >= 7  ? 1 : 0.0"
+					"scale": "q.property('property:stamp_7') ? 1 : 0.0"
 				},
 				"stamp_8": {
-					"scale": "q.property('property:checked_stamp_count') >= 8  ? 1 : 0.0"
-				},
-				"stamp_9": {
-					"scale": "q.property('property:checked_stamp_count') >= 9  ? 1 : 0.0"
-				},
-				"stamp_10": {
-					"scale": "q.property('property:checked_stamp_count') >= 10 ? 1 : 0.0"
-				},
-				"stamp_11": {
-					"scale": "q.property('property:checked_stamp_count') >= 11 ? 1 : 0.0"
-				},
-				"stamp_12": {
-					"scale": "q.property('property:checked_stamp_count') >= 12 ? 1 : 0.0"
-				},
-				"stamp_13": {
-					"scale": "q.property('property:checked_stamp_count') >= 13 ? 1 : 0.0"
+					"scale": "q.property('property:stamp_8') ? 1 : 0.0"
 				},
 				"stamp_end": {
 					"scale": "q.property('property:stamp_max_pressed') ? 1 : 0.0"

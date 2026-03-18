@@ -9,7 +9,7 @@ import { CheckPoint } from "./CheckPoint";
 
 
 export class Stamprally {
-    static MAX_STAMP_COUNT = 13;
+    static MAX_STAMP_COUNT = 8;
     static STAMPBOARD_ITEM_ID_1 = `sr:board_1`;
     static STAMPBOARD_ITEM_ID_2 = `sr:board_2`;
     static TOOL_ITEM_ID = `minecraft:stick`;
@@ -24,12 +24,11 @@ export class Stamprally {
         for(const player of world.getPlayers()) {
             //ラグ防止のため 20tick毎に実行
             if(system.currentTick % 20 == 0) {
+                const checkedList = CheckPoint.getCheckedList(player);
                 //スタンプを押している回数を取得
-                const checkedStampCount = player.getProperty(`property:checked_stamp_count`);
-                objective.setScore(player, checkedStampCount);
+                objective.setScore(player, checkedList.length);
 
                 //タグを付与
-                const checkedList = CheckPoint.getCheckedList(player);
                 for(let i=1; i<=Stamprally.MAX_STAMP_COUNT; i++) {
                     const number = `${i}`;
                     const checked = checkedList.includes(number);
@@ -48,7 +47,7 @@ export class Stamprally {
                     if(mapNumber == 1)maxStampCount = 8;
                     if(mapNumber == 2)maxStampCount = 6;
 
-                    if(checkedStampCount == maxStampCount)player.setProperty(`property:stamp_max_pressed`, true);
+                    if(checkedList.length >= maxStampCount)player.setProperty(`property:stamp_max_pressed`, true);
                     else player.setProperty(`property:stamp_max_pressed`, false);
                 }
             };
@@ -149,8 +148,10 @@ export class Stamprally {
      * @param {Player} player 
      */
     static reset(player) {  
-        playerDB.set(player, `checkedPointList`, []);
-        player.setProperty(`property:checked_stamp_count`, 0);
+        for(let i=1; i<=Stamprally.MAX_STAMP_COUNT; i++) {
+            player.setProperty(`property:stamp_${i}`, false);
+        }
+        
         player.sendMessage(`§6[スタンプラリー]§f 記録を初期化しました`);
     }
 
@@ -183,7 +184,7 @@ export class Stamprally {
         };
 
         //end
-        const ended = player.getProperty(`property:checked_stamp_count`) >= maxStampCount;
+        const ended = checkedList.length >= maxStampCount;
         if(ended) form.button(`§2§g§r§fスタンプラリー完了!!`, `textures/items/spyglass`);
         else form.button(`§2§n§r§fスタンプラリー完了!`, `textures/items/spyglass`);
 
