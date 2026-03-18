@@ -101,30 +101,24 @@ export class Game {
      * @param {Player} player 
      */
     static load(player) {
-        //プレイ中ではない場合
-        if(!Game.getState(player))return;
+        const state = Game.getState(player);
 
-        //ゲームが進行中かどうか
-        if(!Game.ingame)return Game.exit(player);
+        //joinの場合は退出
+        if(state == `join`)return Game.exit(player);
 
-        //参加中、プレイ中であり、ゲーム進行中の場合　強制終了させる
-        player.removeTag(`kd_join`);
-        player.removeTag(`kd_play`);
+        //playの場合
+        if(state == `play`) {
+            //ゲーム中か
+            if(Game.ingame)return;
 
-        player.removeEffect(`resistance`);
-        player.removeEffect(`saturation`);
-        player.sendMessage(`§cゲーム進行中に退出したため、強制終了となりました。`);
-
-        player.nameTag = player.name;
-
-        Role.set(player);
-        Marker.set(player, 0);
-        
-        player.teleport(Position.INIT);
+            return Game.exit(player);
+        }
     }
 
 
     static getState(player) {
+        if(!player || !player.isValid)return undefined;
+        
         if(player.hasTag(`kd_join`))return `join`;
         else if(player.hasTag(`kd_play`))return `play`;
         else return undefined;
@@ -147,6 +141,14 @@ export class Game {
         // //泥棒がいない場合
         // if(Game.players.filter(p => !Police.is(p)).length == 0)return gameMaster.sendMessage(`§6[ドロケイ] §c泥棒の人数が足りません(現在: 0人、必要: 1人以上)`);
 
+        //座標の設定ができんていない場合
+        if(!Position.INIT)return gameMaster.sendMessage(`§6[ドロケイ] §c初期座標が設定されていません`);
+        if(!Position.RESPAWN)return gameMaster.sendMessage(`§6[ドロケイ] §c復活座標が設定されていません`);
+        if(!Position.PRISON)return gameMaster.sendMessage(`§6[ドロケイ] §c牢屋座標が設定されていません`);
+        if(!Position.GENERATOR_1)return gameMaster.sendMessage(`§6[ドロケイ] §c発電機1座標が設定されていません`);
+        if(!Position.GENERATOR_1)return gameMaster.sendMessage(`§6[ドロケイ] §c発電機1座標が設定されていません`);
+
+        world.gameRules.locatorBar = false;
 
         let cnt = 3;
         const systemNum = system.runInterval(() => {
@@ -193,7 +195,8 @@ export class Game {
                 subtitle: `§6START`
             });
             Util.playSoundP(player, `block.end_portal.spawn`, { delay:5 });
-
+            Util.resetCollision(player);
+            
             const role = Role.get(player)
             if(role == `police`) { //警察
                 player.sendMessage(`§6ドロケイ START!!\n§f制限時間内に泥棒を全員捕まえろ!!`);
@@ -290,6 +293,8 @@ export class Game {
                 player.sendMessage(message + `\n§b生存者: §f${winPlayers.map(p => p.name).join(`§b, §f`)}\n\n§f30秒後にテレポートします`);
                 Util.playSoundP(player, `block.end_portal.spawn`);
             }
+
+            world.gameRules.locatorBar = true;
         }, 3);
 
         
@@ -305,6 +310,8 @@ export class Game {
                 Marker.set(player, 0);
 
                 player.teleport(Position.INIT);
+
+                Util.resetCollision(player);
             }
         }, 20 * 30);
     }
@@ -335,7 +342,11 @@ export class Game {
             player.teleport(Position.INIT);
 
             ExHud.sidebarShow(player);
+
+            Util.resetCollision(player);
         }
+
+        world.gameRules.locatorBar = true;
     }
 
 
@@ -343,16 +354,22 @@ export class Game {
      * 泥棒を全員発光
      */
     static glow() {
-         Game.glowTime = -1;
+        Game.glowTime = -1;
         
-        Util.sendMessage(Game.players, `§c泥棒が発光した!!`);
+        for(const player of Game.players) {
+            if(!player || !player.isValid)continue;
 
-        for(const thief of Role.getThiefs(Game.players.filter(p => Role.getLife(p)))) {
+            player.sendMessage(`§c泥棒が発光した!!`)
+        }
+
+        for(const thief of Role.getThiefs(Game.players.filter(p => Role.getLife(p) > -1))) {
             if(!thief || !thief.isValid)continue;
             Marker.set(thief, 20 * Config.GLOW_TIME);
         }
 
         system.runTimeout(() => {
+            if(!Game.ingame)return;
+            
             Game.glowTime = Config.GLOW_INTERVAL_TIME;
         }, 20 * Config.GLOW_TIME);
     }
@@ -383,7 +400,6 @@ export class Game {
                 ExHud.actionbar(player, `§c>> 止まると発光してしまう!! <<`);
 
                 if(system.currentTick % 20 == 0) {
-                    Util.playSoundP(player, `random.anvil_land`, { pitch:1.5, count:3 });
                     player.onScreenDisplay.setTitle(`§c`, {
                     fadeInDuration:0, stayDuration:10, fadeOutDuration:5,
                     subtitle: `§c>> 止まると発光してしまう!! <<`

@@ -5,6 +5,8 @@ import { log, Util } from "./lib/Util";
 import { WorldDB, PlayerDB } from "./lib/Database";
 import { Vector } from "./lib/Vector";
 import { Game } from "./Game";
+import { Role } from "./Role";
+import { Config } from "./Config";
 
 
 const PDB = new PlayerDB(`glow`);
@@ -15,12 +17,20 @@ export class Marker {
         const tick = Marker.get(player);
         if(tick > 0) {
             Marker.set(player, tick-1);
-            player.setProperty(`property:marker`, true);
 
+            //無敵時間中
+            const resistance = Role.getResistane(player);
+            if(resistance) {
+                player.setProperty(`property:marker`, false);
+                Marker.removeShape(player);
+            }
+
+            if(!player.getProperty(`property:marker`))player.setProperty(`property:marker`, true);
+            
             Marker.drawShape(player);
             Marker.animShape(player);
         }else {
-            player.setProperty(`property:marker`, false);
+            if(player.getProperty(`property:marker`))player.setProperty(`property:marker`, false);
 
             Marker.removeShape(player);
         }
@@ -44,9 +54,15 @@ export class Marker {
 
 
     static drawShape(player) {
+        if(!Config.GLOW_SHAPE) {
+            if(player.markerShape)debugDrawer.removeShape(player.markerShape);
+            return;
+        };
+
+
         //すでにshapeが作成済みかどうか
         if(player.markerShape) {
-            player.markerShape.visibleTo = Game.players.filter(p => { p.id != player.id });
+            player.markerShape.visibleTo = Game.players; //.filter(p => { p.id != player.id });
             debugDrawer.addShape(player.markerShape);
             return;
         }

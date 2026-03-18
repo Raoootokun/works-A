@@ -12,8 +12,10 @@ export class Role {
      * 役職を取得
      */
     static get(player) {
-        if(player?.hasTag(`kd_police`))return `police`;
-        else if(player?.hasTag(`kd_thief`))return `thief`;
+        if(!player || !player.isValid)return undefined;
+
+        if(player.hasTag(`kd_police`))return `police`;
+        else if(player.hasTag(`kd_thief`))return `thief`;
         else return undefined;
     }
 

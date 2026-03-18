@@ -10,7 +10,7 @@ import { Marker } from "./Marker";
 import { Generator } from "./Generator";
 import { Armor } from "./Armor";
 
-export const VERSION = [ 1, 1, 0 ];
+export const VERSION = [ 1, 2, 0 ];
 WorldLoad.subscribe(ev => {
     ev.reloadLog(`§bドロケイ`, VERSION); 
 
@@ -19,15 +19,35 @@ WorldLoad.subscribe(ev => {
 
     system.runInterval(() => {
         const players = world.getPlayers();
-        //参加中のプレイヤー
-        const playersJ = players.filter(p => Game.getState(p) == `join`);
-        const policesJ = Role.getPolices(playersJ);
 
-        //プレイ中のプレイヤー
-        const playersP = players.filter(p => Game.getState(p) == `play`);
-        const policesP = Role.getPolices(playersP);
-        const thiefsP = Role.getThiefs(playersP);
-        const aliveThiefsP = thiefsP.filter(p => Role.getLife(p) > -1);
+        const playersJ = [];
+        const policesJ = [];
+        const thiefsJ = [];
+
+        const playersP = [];
+        const policesP = [];
+        const thiefsP = [];
+        const aliveThiefsP = [];
+
+        for(const p of players) {
+            const s = Game.getState(p);
+            const r = Role.get(p);
+
+            if(s == `join`) {
+                playersJ.push(p);
+                if(r == `police`)policesJ.push(p);
+                else if(r == `thief`)thiefsJ.push(p);
+            }else if(s == `play`) {
+                playersP.push(p);
+                if(r == `police`)policesP.push(p);
+                else if(r == `thief`) {
+                    thiefsP.push(p);
+                    const l = Role.getLife(p);
+                    if(l > -1)aliveThiefsP.push(p);
+                }
+            }
+        };
+
 
         for(const player of players) {
             const state = Game.getState(player);
@@ -91,10 +111,6 @@ WorldLoad.subscribe(ev => {
                                 if(glow <= 20) ExHud.sidebarSet(player, `kd_info`, `- §c発光中: §f1§c秒`, 10001, true);
                                 else {
                                     ExHud.sidebarSet(player, `kd_info`, `- §c発光中: §f${Math.floor(glow / 20)}§c秒`, 10001, true);
-                                    player.onScreenDisplay.setTitle(`§c`, {
-                                        fadeInDuration:0, stayDuration:20, fadeOutDuration:0,
-                                        subtitle: `§c>> 発光中: §f${Math.floor(glow / 20)}§c秒!! <<`
-                                    });
                                 }
                             }   
                             
@@ -118,11 +134,11 @@ WorldLoad.subscribe(ev => {
                         ExHud.sidebarSet(player, `kd_info`, `§f`, 9999, true);
                         const geneInfo1 = Generator.getInfo(1);
                         if(geneInfo1.cooldown) ExHud.sidebarSet(player, `kd_info`, `- §v発電機-1: §c${geneInfo1.cooldown}§v秒`, 9999, true);
-                        else ExHud.sidebarSet(player, `kd_info`, `- §v発電機-1: §f${geneInfo1.percent}§v%%`, 9998, true);
+                        else ExHud.sidebarSet(player, `kd_info`, `- §v発電機-1: §f${geneInfo1.percent}§v%`, 9998, true);
 
                         const geneInfo2 = Generator.getInfo(2);
                         if(geneInfo2.cooldown) ExHud.sidebarSet(player, `kd_info`, `- §v発電機-2: §c${geneInfo2.cooldown}§v秒`, 9999, true);
-                        else ExHud.sidebarSet(player, `kd_info`, `- §v発電機-2: §f${geneInfo2.percent}§v%%`, 9997, true);
+                        else ExHud.sidebarSet(player, `kd_info`, `- §v発電機-2: §f${geneInfo2.percent}§v%`, 9997, true);
 
 
                         //水の使った場合
@@ -134,7 +150,7 @@ WorldLoad.subscribe(ev => {
 
                     
                     //発光までの時間
-                    if(Game.phase == 2 && Game.glowTime > -1) ExHud.sidebarSet(player, `kd_info`, `- §e発光まで: §f${Game.glowTime}§e秒`, 10009, true);
+                    if(Game.phase == 2 && Game.glowTime > -1) ExHud.sidebarSet(player, `kd_info`, `- §e泥棒発光まで: §f${Game.glowTime}§e秒`, 10009, true);
                 }
             };
 
@@ -179,4 +195,9 @@ WorldLoad.subscribe(ev => {
         }
         
     });
+
+
+    for(const p of world.getPlayers()) {
+        // Marker.set(p, 20 * 10);
+    }
 });

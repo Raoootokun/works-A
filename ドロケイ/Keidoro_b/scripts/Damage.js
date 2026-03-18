@@ -7,7 +7,7 @@ import { Role } from "./Role";
 import { Position } from "./Position";
 
 
-const RESISTANCE = 10 * 20;
+const RESISTANCE = 20 * 20;
 
  
 export class Damage { 
@@ -30,8 +30,7 @@ export class Damage {
         
         const hurtRole = Role.get(this.hurtEntity);
         const damagingRole = Role.get(this.damagingEntity);
-        if(hurtRole != `thief` && damagingRole != `police`)return;
-
+        if(hurtRole != `thief` || damagingRole != `police`)return;
 
         //ゲーム中以外の場合
         if(!Game.ingame)return;

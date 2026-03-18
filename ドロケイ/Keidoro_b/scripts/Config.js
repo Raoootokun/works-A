@@ -15,6 +15,8 @@ export class Config {
     static STAY_GLOW_TIME = 5;
     static GENERATOR_CHARGE = 5;
     static GENERATOR_COOLDOWN = 60;
+    static GLOW_SHAPE = true;
+    static GENERATOR_SHAPE = true;
 
 
     static load() {
@@ -25,6 +27,8 @@ export class Config {
         Config.STAY_GLOW_TIME = WDB.get(`STAY_GLOW_TIME`) ?? 5;
         Config.GENERATOR_CHARGE = WDB.get(`GENERATOR_CHARGE`) ?? 300;
         Config.GENERATOR_COOLDOWN = WDB.get(`GENERATOR_COOLDOWN`) ?? 60;
+        Config.GLOW_SHAPE = WDB.get(`GLOW_SHAPE`) ?? true;
+        Config.GENERATOR_SHAPE = WDB.get(`GENERATOR_SHAPE`) ?? true;
     }
 
     static set(key, value) {

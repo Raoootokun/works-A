@@ -1,7 +1,7 @@
 import { world, system, Player, BlockVolume, } from "@minecraft/server";
 import { debugDrawer, DebugText, DebugLine, DebugBox, DebugArrow, DebugCircle } from "@minecraft/debug-utilities";
 import { WorldLoad } from "./lib/WorldLoad";
-import { log, Util } from "./lib/Util"; 
+import { log, random, Util } from "./lib/Util"; 
 import { WorldDB, PlayerDB } from "./lib/Database";
 import { Position } from "./Position";
 import { Vector } from "./lib/Vector";
@@ -126,6 +126,12 @@ export class Generator {
      */
     static drawShape(number) {
         const shape = Generator[number].shape;
+
+        if(!Config.GENERATOR_SHAPE) {
+            if(shape)debugDrawer.removeShape(shape);
+            return;
+        };
+
         shape.setLocation(Vector.add(Position[`GENERATOR_${number}`], { x:-0.0, y:1, z:-0.0 }));
         
         let txt = `§v発電機 - ${number}`;

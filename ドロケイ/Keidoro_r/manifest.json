@@ -1,10 +1,10 @@
 {
   "format_version": 1,
   "header": {
-    "name": "ケイドロ [ver1.1.0]",
+    "name": "ドロケイ [ver1.2.0]",
     "description": "",
     "uuid": "64de435d-f635-48aa-57c6-914d38975492",
-    "version": [ 1, 1, 0 ],
+    "version": [ 1, 2, 0 ],
     "min_engine_version": [ 1, 21, 130 ]
   },
   "modules": [

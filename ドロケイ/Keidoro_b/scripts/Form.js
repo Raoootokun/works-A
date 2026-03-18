@@ -101,6 +101,11 @@ export class Form {
 
         form.slider(`GENERATOR_CHARGE`, 50, 500, { valueStep:10, defaultValue:Config.GENERATOR_CHARGE, tooltip:`電力が最大まで貯まるまでに必要なレバー操作の回数` });
         form.slider(`GENERATOR_COOLDOWN`, 0, 120, { valueStep:1, defaultValue:Config.GENERATOR_COOLDOWN, tooltip:`電力が使用可能になるまでのクールダウンの秒数(s)` });
+        form.divider();
+        
+        form.toggle(`GLOW_SHAPE`, { defaultValue:Config.GLOW_SHAPE, tooltip:`発光のShapeの表示` });
+        form.toggle(`GENERATOR_SHAPE`, { defaultValue:Config.GENERATOR_SHAPE, tooltip:`発電機のShapeの表示` });
+
         form.submitButton(`変更`)
         form.show(player).then(res => {
             if(res.canceled)return;
@@ -112,6 +117,9 @@ export class Form {
             Config.set(`STAY_GLOW_TIME`, res.formValues[6]);
             Config.set(`GENERATOR_CHARGE`, res.formValues[8]);
             Config.set(`GENERATOR_COOLDOWN`, res.formValues[9]);
+            Config.set(`GLOW_SHAPE`, res.formValues[11]);
+            Config.set(`GENERATOR_SHAPE`, res.formValues[12]);
+
             Config.load();
             
             player.sendMessage(`§6[ドロケイ] §f設定を保存しました。`);

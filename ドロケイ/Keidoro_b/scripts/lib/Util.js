@@ -417,5 +417,14 @@ export class Util {
         };
     }
 
+    static async resetCollision(player) {
+        const defMode = player.getGameMode();
+        player.setGameMode(`Spectator`);
+
+        system.runTimeout(() => {
+            player.setGameMode(defMode);
+        }, 1);
+    }
+
 }
 
