@@ -1,0 +1,18 @@
+{
+    "resource_pack_name": "fg",
+    "texture_name": "atlas.items",
+    "texture_data": {
+        "itou": {
+            "textures": "textures/items/itou"
+        },
+        "golditou": {
+            "textures": "textures/items/golditou"
+        },
+        "goldfish": {
+            "textures": "textures/items/goldfish"
+        },
+        "boni": {
+            "textures": "textures/items/boni"
+        }
+    }
+}

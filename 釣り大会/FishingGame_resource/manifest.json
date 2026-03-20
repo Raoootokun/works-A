@@ -1,0 +1,17 @@
+{
+  "format_version": 1,
+  "header": {
+    "name": "釣り大会 [ver1.0.0]",
+    "description": "",
+    "uuid": "64de546d-f635-64aa-62c6-914d38975492",
+    "version": [ 1, 0, 0 ],
+    "min_engine_version": [ 1, 21, 130 ]
+  },
+  "modules": [
+    {
+      "type": "resources",
+      "uuid": "bb0aa436-c547-1109-4a73-356e50fad0b1",
+      "version": [ 1, 0, 0 ]
+    }
+  ]
+}

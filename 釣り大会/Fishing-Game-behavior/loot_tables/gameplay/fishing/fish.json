@@ -1,0 +1,135 @@
+{
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:fish",
+          "weight": 494,
+          "functions": [
+            {
+              "function": "set_name",
+              "name": "タラ"
+            },
+            {
+              "function": "set_lore",
+              "lore": [ "is_fg_item" ]
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:salmon",
+          "weight": 200,
+          "functions": [
+            {
+              "function": "set_name",
+              "name": "サケ"
+            },
+            {
+              "function": "set_lore",
+              "lore": [ "is_fg_item" ]
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:pufferfish",
+          "weight": 150,
+          "functions": [
+            {
+              "function": "set_name",
+              "name": "フグ"
+            },
+            {
+              "function": "set_lore",
+              "lore": [ "is_fg_item" ]
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:clownfish",
+          "weight": 100,
+          "functions": [
+            {
+              "function": "set_name",
+              "name": "カクレクマノミ"
+            },
+            {
+              "function": "set_lore",
+              "lore": [ "is_fg_item" ]
+            }
+          ]
+        },
+        
+
+        {
+          "type": "item",
+          "name": "fg:goldfish",
+          "weight": 50,
+          "functions": [
+            {
+              "function": "set_name",
+              "name": "金魚"
+            },
+            {
+              "function": "set_lore",
+              "lore": [ "is_fg_item" ]
+            }
+          ]
+        },
+        
+        {
+          "type": "item",
+          "name": "fg:golditou",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_name",
+              "name": "黄金魚"
+            },
+            {
+              "function": "set_lore",
+              "lore": [ "is_fg_item" ]
+            }
+          ]
+        },
+        
+        {
+          "type": "item",
+          "name": "fg:itou",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "set_name",
+              "name": "§aイトウ"
+            },
+            {
+              "function": "set_lore",
+              "lore": [ "is_fg_item" ]
+            }
+          ]
+        },
+
+        {
+          "type": "item",
+          "name": "fg:boni",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_name",
+              "name": "§6ぼにぼに"
+            },
+            {
+              "function": "set_lore",
+              "lore": [ "is_fg_item" ]
+            }
+          ]
+        }
+
+      ]
+    }
+  ]
+}

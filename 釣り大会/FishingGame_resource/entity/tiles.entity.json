@@ -1,0 +1,21 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "fg:tiles",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/tiles"
+      },
+      "geometry": {
+        "default": "geometry.tiles"
+      },
+      "scripts": {},
+      "render_controllers": [
+        "controller.render.tiles"
+      ]
+    }
+  }
+}
